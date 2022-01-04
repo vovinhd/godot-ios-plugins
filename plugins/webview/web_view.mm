@@ -1,10 +1,14 @@
 #include "web_view.h"
 
 #import <UIKit/UIKit.h>
+#import <WebKit/WKWebView.h>
 
 WebView *instance = NULL; 
 
 @interface GodotWebView : UIViewController
+
+@property(strong,nonatomic) WKWebView *webView;
+
  - (void) load_url: (String) url;
  - (void) close;
 @end 
@@ -12,8 +16,17 @@ WebView *instance = NULL;
 @implementation GodotWebView
 
 - (void)load_url:(String)url {
-    // NSString *ns_url = [[NSString alloc] initWithUTF8String:url.c_str()];
+    char const * _url = "https://apple.com";
+    NSString *ns_url_str = [[NSString alloc] initWithUTF8String: _url ];
     NSLog(@"[GodotWebView] Opening URL: %@", &url);
+
+    NSURL *ns_url = [NSURL URLWithString: ns_url_str];
+    NSURLRequest *request = [NSURLRequest requestWithURL: ns_url];
+
+    _webView = [[WKWebView alloc] initWithFrame:self.view.frame];
+    [_webView loadRequest:request];
+    _webView.frame = CGRectMake(self.view.frame.origin.x,self.view.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height);
+    [self.view addSubview:_webView];
 }
 
 - (void)close {
