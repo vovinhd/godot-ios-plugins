@@ -9,15 +9,14 @@ WebView *instance = NULL;
 
 @property(strong,nonatomic) WKWebView *webView;
 
- - (void) load_url: (String) url;
+ - (void) load_url: (const char *) url;
  - (void) close;
 @end 
 
 @implementation GodotWebView
 
-- (void)load_url:(String)url {
-    char const * _url = "https://apple.com";
-    NSString *ns_url_str = [[NSString alloc] initWithUTF8String: _url ];
+- (void)load_url:(const char*)url {
+    NSString *ns_url_str = [[NSString alloc] initWithUTF8String: url ];
     NSLog(@"[GodotWebView] Opening URL: %@", &url);
 
     NSURL *ns_url = [NSURL URLWithString: ns_url_str];
@@ -45,7 +44,9 @@ void WebView::_bind_methods() {
 }
 
 void WebView::load_url(String url) {
-    [godot_web_view load_url:url];
+    // https://github.com/godotengine/godot/blob/master/modules/gdnative/gdnative/string.cpp#L132
+    const char * _url = url.utf8().get_data();
+    [godot_web_view load_url:_url];
 }
 
 void WebView::close() {
