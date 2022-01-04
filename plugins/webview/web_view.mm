@@ -17,7 +17,7 @@ WebView *instance = NULL;
 
 - (void)load_url:(const char*)url {
     NSString *ns_url_str = [[NSString alloc] initWithUTF8String: url ];
-    NSLog(@"[GodotWebView] Opening URL: %@", &url);
+    NSLog(@"[GodotWebView] Opening URL: %@", ns_url_str);
 
     NSURL *ns_url = [NSURL URLWithString: ns_url_str];
     NSURLRequest *request = [NSURLRequest requestWithURL: ns_url];
